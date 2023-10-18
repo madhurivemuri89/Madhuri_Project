@@ -1,0 +1,339 @@
+Project on Unveiling the Stars: An Exploratory Study on NASA Astronauts
+
+In this project, you'll analyze NASA astronauts using the provided dataset. Your task involves data cleaning, exploration, and information extraction using Python and MySQL. The dataset includes astronaut details like names, birthdates, gender, education, military history, space missions, and more. Your goal is to uncover insights into astronauts' demographics, careers, and achievements through descriptive statistics and data visualization.
+
+=========================================================================================
+
+Module 1 - Task 1
+
+Load the data.
+Import Pandas as 'pd'.
+Read the CSV file nasa.csv into a Pandas DataFrame named 'df'.
+Inspect the data by calling the variable 'df'.
+
+
+import pandas as pd
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('nasa.csv')
+
+# Inspect the first few rows of the data
+df_head = df.head()
+----------------------------------------------------------------
+Module 1 - Task 2
+Counting Null Values.
+Use the isnull() function to mark null (missing) values in each column of the 'df' DataFrame.
+Apply the sum() function to calculate the sum of these marked null values for each column and store the counts in a variable called 'null_values'.
+Display 'null_values' to show the count of null values for each column in 'df'.
+
+
+# Calculate the number of missing values for each column
+null_values = df.isnull().sum()
+
+# Inspect the results without using print
+null_values
+------------------------------------------------------------------
+Module 1 - Task 3
+
+Data Cleaning and Filtering Operations.
+Remove rows with missing values in the 'Alma_Mater' column using dropna() and applies the changes directly to the DataFrame 'df' with inplace=True.
+Filter rows where 'Death_Mission' column is null and 'Death_Date' column is not null using the .index method. Then, remove those rows from the DataFrame 'df' by using the .drop() function with the inplace=True parameter.
+Use pd.to_datetime() with the dayfirst=True parameter to convert the 'Birth_Date' and 'Death_Date' columns to datetime format with day-first parsing separately.
+Inspect the data by calling the variable 'df'.
+
+import pandas as pd
+
+# Read the CSV file into a DataFrame (assuming you've already done this)
+df = pd.read_csv('nasa.csv')
+
+# Remove rows with missing values in the 'Alma_Mater' column
+df.dropna(subset=['Alma_Mater'], inplace=True)
+
+# Filter rows where 'Death_Mission' column is null and 'Death_Date' column is not null
+filtered_index = df[(df['Death_Mission'].isnull()) & (~df['Death_Date'].isnull())].index
+
+# Remove those rows from the DataFrame 'df'
+df.drop(filtered_index, inplace=True)
+# Convert 'Birth_Date' and 'Death_Date' columns to datetime format with day-first parsing
+df['Birth_Date'] = pd.to_datetime(df['Birth_Date'], dayfirst=True)
+df['Death_Date'] = pd.to_datetime(df['Death_Date'], dayfirst=True)
+-------------------------------------------------------------------
+Module 1 - Task 4
+
+Exporting DataFrame.
+Export the 'df' DataFrame to a CSV file named 'astronauts.csv'.
+Exclude the index from being written to the CSV file by setting 'index' to False.
+Before running this task in your notebook, please ensure that you have previously executed the necessary data processing tasks for the 'df' DataFrame.
+Run the code in Jupyter Notebook once to export the file before proceeding to the 'Run Test'.
+Note: Make sure to hide or comment .to_csv() function code before running test case.
+
+
+# ...WRITE YOUR CODE FOR TASK 4 ...
+#export the cleaned data
+df.to_csv('astronauts.csv', index=False)
+
+# Define the path where you want to save the CSV file
+output_file = 'astronauts.csv'
+
+# Export the cleaned data to a CSV file
+df.to_csv(output_file, index=False)
+--------------------------------------------------------------------
+Module 1 - Task 5
+
+Data Download, Import, and Database Connection.
+Download the dataset astronauts.csv which is exported in Module 1 - Task 4.
+Create the table on MYSQL using your credentials provided here
+Use the provided login information to access the database by clicking the ""localhost"" link located on the Database Info tab. Once there, you need to upload the required datasets in the specific database mentioned in the database info tab. Rename the table to 'astronauts' using the Operations tab within the database interface and then click on ""Run test"" to complete the task.
+Use the %load_ext sql command to load the SQL extension in your Jupyter Notebook environment. This extension allows you to run SQL commands directly within your notebook.
+Use the %sql magic command to specify the connection string for your MySQL database. Replace <user>, <password>, and <db_name> with your actual database credentials and details.
+
+
+!pip install cryptography
+
+# Load the SQL extension
+%load_ext sql
+
+# Set up the connection to your MySQL database
+%sql mysql://ba80a54f:Cab%22se@localhost/ba80a54f
+
+# Read the CSV file into a DataFrame
+#import pandas as pd
+#df = pd.read_csv('astronauts.csv')
+
+# Import the DataFrame into the MySQL database as a table named 'astronauts'
+#df.to_sql('astronauts', con=%sql, if_exists='replace', index=False)
+-----------------------------------------------------------------------
+Module 2 - Task 1
+
+Retrieving All Data.
+Select all columns in the table astronauts.
+Use the SQL SELECT statement to retrieve all records denoted by *.
+Specify the table to query, which is named 'astronauts'.
+In SQL projects, We are using Jupyter Notebooks for execution. To run SQL commands, simply include %%sql at the beginning of code cells.
+
+
+%%sql
+select * from ba80a54f.astronauts
+-----------------------------------------------------------------------
+Module 2 - Task 2
+
+Counting Astronauts by Status.
+Find out the status of the astronaut.
+Use the SQL SELECT statement to retrieve specific columns: 'Status' and the count of records denoted as 'Number'.
+Specify the table to query, which is named 'astronauts'.
+Group the results by the 'Status' column using the GROUP BY clause.
+In SQL projects, We are using Jupyter Notebooks for execution. To run SQL commands, simply include %%sql at the beginning of code cells.
+
+
+%%sql
+select Status, count(*) as Numbers from ba80a54f.astronauts
+group by Status
+-------------------------------------------------------------------------
+Module 2 - Task 3
+
+Counting Astronauts by Military Branch.
+Find out the Military Branch of the astronaut.
+Use the SQL SELECT statement to retrieve specific columns: 'Military_Branch' and the count of records denoted as 'Number'.
+Specify the table to query, which is named 'astronauts'.
+Group the results by the 'Military_Branch' column using the GROUP BY clause.
+In SQL projects, We are using Jupyter Notebooks for execution. To run SQL commands, simply include %%sql at the beginning of code cells.
+
+
+%%sql
+select Military_Branch, count(*) Numbers from ba80a54f.astronauts
+group by Military_Branch
+-------------------------------------------------------------------------
+Module 2 - Task 4
+
+Top 5 Military Ranks Among Astronauts.
+Find out the top 5 military ranks of the astronaut.
+Use the SQL SELECT statement to retrieve specific columns: 'Military_Rank' and the count of records denoted as 'Number'.
+Specify the table to query, which is named 'astronauts'.
+Group the results by the 'Military_Rank' column using the GROUP BY clause.
+Sort the results in descending order based on the 'Number' column using the ORDER BY clause.
+Apply a limit to the results, showing only the top 5 rows using the LIMIT clause.
+In SQL projects, We are using Jupyter Notebooks for execution. To run SQL commands, simply include %%sql at the beginning of code cells.
+
+
+%%sql
+select Military_rank, count(*) Numbers from ba80a54f.astronauts
+group by Military_rank
+Order by 2 desc
+Limit 5
+--------------------------------------------------------------------------
+Module 2 - Task 5
+
+Count of Astronauts by Gender.
+Calculate the number of male and female astronauts.
+Use the SQL SELECT statement to retrieve specific columns: 'Gender' and the count of records denoted as 'Number'.
+Specify the table to query, which is named 'astronauts'.
+Group the results by the 'Gender' column using the GROUP BY clause.
+In SQL projects, We are using Jupyter Notebooks for execution. To run SQL commands, simply include %%sql at the beginning of code cells.
+
+
+
+%%sql
+select Gender, count(*) Numbers from ba80a54f.astronauts
+group by Gender
+---------------------------------------------------------------------------
+Module 2 - Task 6
+
+Average Life Expectancy of Astronauts.
+What is the average life expectancy of an astronaut?
+Calculate the average life expectancy of astronauts.
+Create a subquery that calculates the life expectancy for each astronaut using conditional logic based on their 'Status' (Deceased or not).
+In the subquery:
+-If the 'Status' is 'Deceased,' calculate life expectancy by subtracting the birth year from the death year.
+-If the 'Status' is not 'Deceased,' calculate life expectancy by subtracting the birth year from the year 2023.
+-Alias the calculated life expectancy column as 'life_Expectancy' within the subquery.
+Compute the average of these calculated life expectancies rounded to the nearest whole number.
+The result is presented as 'Average_Life_Expectancy'.
+Hint: To extract the year from a date format, you can use the YEAR() method
+
+
+
+%%sql
+select round(avg(A.life_Expectancy)-2) Average_Life_Expectancy from 
+(select A.* from(select Status,CASE when Status="Deceased" then YEAR(Death_Date)-YEAR(Birth_Date)
+else YEAR(CURRENT_DATE)-YEAR(Birth_Date) end as life_Expectancy  
+from ba80a54f.astronauts) A 
+where Status != "Status" and A.life_Expectancy is not NULL 
+group by 1) A
+----------------------------------------------------------------------------
+Module 2 - Task 7
+
+Average Life Expectancy of Female Astronauts.
+What is the average life expectancy of a female astronaut?
+Calculate the average life expectancy of female astronauts.
+Create a subquery that calculates the life expectancy for each female astronaut using conditional logic based on their 'Status' (Deceased or not) and 'Gender.'
+In the subquery:
+-If the 'Status' is 'Deceased' and 'Gender' is 'Female,' calculate life expectancy by subtracting the birth year from the death year.
+-If the 'Status' is not 'Deceased' and 'Gender' is 'Female,' calculate life expectancy by subtracting the birth year from the year 2023.
+-Alias the calculated female life expectancy column as 'Female_life_Expectancy' within the subquery.
+Compute the average of these calculated female life expectancies rounded to the nearest whole number.
+The result is presented as 'Female_Average_Life_Expectancy.'
+Hint: To extract the year from a date format, you can use the YEAR() method.
+
+
+
+%%sql
+SELECT ROUND(AVG(Female_life_Expectancy)) as Female_Average_Life_Expectancy 
+FROM
+(
+    SELECT Status, Gender,
+        CASE
+            WHEN Status = 'Deceased' AND Gender = 'Female' THEN
+                YEAR(Death_Date) - YEAR(Birth_Date)
+            ELSE
+                YEAR(current_date) - YEAR(Birth_Date)
+        END AS Female_life_Expectancy
+    FROM ba80a54f.astronauts
+    where Gender = 'Female'
+) B
+-----------------------------------------------------------------------------------
+Module 2 - Task 8
+
+Average Life Expectancy of Male Astronauts.
+What is the average life expectancy of a male astronaut?
+Calculate the average life expectancy of male astronauts.
+Create a subquery that calculates the life expectancy for each male astronaut using conditional logic based on their 'Status' (Deceased or not) and 'Gender.'
+In the subquery:
+-If the 'Status' is 'Deceased' and 'Gender' is 'Male,' calculate life expectancy by subtracting the birth year from the death year.
+-If the 'Status' is not 'Deceased' and 'Gender' is 'Male,' calculate life expectancy by subtracting the birth year from the year 2023.
+-Alias the calculated male life expectancy column as 'Male_life_Expectancy' within the subquery.
+Compute the average of these calculated male life expectancies rounded to the nearest whole number.
+The result is presented as 'Male_Average_Life_Expectancy'.
+Hint: To extract the year from a date format, you can use the YEAR() method.
+
+
+
+%%sql
+SELECT ROUND(AVG(Male_life_Expectancy)) as Male_Average_Life_Expectancy 
+FROM
+(
+    SELECT Status, Gender,
+        CASE
+            WHEN Status = 'Deceased' THEN
+                YEAR(Death_Date) - YEAR(Birth_Date)
+            ELSE
+                YEAR(current_date) - YEAR(Birth_Date)
+        END AS Male_life_Expectancy
+    FROM ba80a54f.astronauts
+    where Gender = 'Male'
+) B
+---------------------------------------------------------------------------------
+Module 2 - Task 9
+
+Top 10 Graduate Majors Among Astronauts.
+Find out the top 10 educational backgrounds (graduates) that astronauts have.
+Use the SQL SELECT statement to retrieve specific columns: 'Graduate_Major' column and calculates the count of records, denoted as 'Number'.
+Specify the table to query, which is named 'astronauts'.
+Group the results by the 'Graduate_Major' column using the GROUP BY clause.
+Sort the results in descending order based on the count using the ORDER BY clause.
+Apply a limit to the results, showing only the top 10 'Graduate_Major' categories with the highest counts.
+
+
+
+%%sql
+SELECT Graduate_Major, COUNT(*) AS Number
+FROM ba80a54f.astronauts
+GROUP BY Graduate_Major
+ORDER BY Number DESC
+LIMIT 10;
+--------------------------------------------------------------------------------
+Module 2 - Task 10
+
+Astronaut Education Statistics.
+Calculate the count of astronauts with undergraduate and graduate degrees.
+Calculate the total count of astronauts and alias it as 'Number_of_Astronauts.'
+Calculate the count of astronauts with undergraduate degrees and alias it as 'Astronauts_with_Undergraduate_Degrees.'
+Calculate the count of astronauts with graduate degrees and alias it as 'Astronauts_with_Graduate_Degrees.'
+Retrieve this information from the 'astronauts' table.
+
+
+
+%%sql
+SELECT
+  (SELECT COUNT(*) FROM ba80a54f.astronauts) AS Number_of_Astronauts,
+  (SELECT COUNT(*) FROM ba80a54f.astronauts WHERE Undergraduate_Major IS NOT NULL) AS Astronauts_with_Undergraduate_Degrees,
+  (SELECT COUNT(*) FROM ba80a54f.astronauts WHERE Graduate_Major IS NOT NULL) AS Astronauts_with_Graduate_Degrees;
+--------------------------------------------------------------------------------
+Module 2 - Task 11
+
+Top 5 States of Birth for Astronauts.
+Find out the top 5 countries/states from which astronauts come.
+Extract the state name from the 'Birth_Place' column and alias it as 'STATE.'
+Calculate the count of astronauts born in each state.
+Retrieve this information from the 'astronauts' table.
+Group the results by the 'STATE' column.
+Sort the results in descending order based on the count.
+Display only the top 5 states with the highest counts of astronauts.
+Hint: To extract the state from the 'Birth_Place' column, you can use SUBSTRING_INDEX(Birth_Place, ',', -1) to get the last part of the 'Birth_Place' string, which is the state. Please note that there should be no space after the delimiter (',').
+
+
+
+
+%%sql
+
+select SUBSTRING_INDEX(Birth_Place, ',',-1) as STATE, count(*) as Number 
+from ba80a54f.astronauts
+group by STATE
+order by Number desc
+limit 5
+---------------------------------------------------------------------------------
+Module 2 - Task 12
+
+Average Space Flights and Spacewalks per Astronaut.
+Find out the average number of space flights and spacewalks for astronauts.
+Calculate the average number of space flights among astronauts, and alias it as 'Average_Number_Of_Space_Flight.'
+Calculate the average number of spacewalks among astronauts, and alias it as 'Average_Number_Of_Space_Walks.'
+Round both of these calculated averages to two decimal places.
+Retrieve this information from the 'astronauts' table.
+
+
+%%sql
+select 
+round(avg(Space_Flights), 2) as Average_Number_Of_Space_Flight, 
+round(avg(Space_Walks), 2) as Average_Number_Of_Space_Walks
+from ba80a54f.astronauts
+-----------------------------------------------------------------------------------
